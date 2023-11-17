@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="indicesApp">
+<head>
+    <title>Indices App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="IndicesController">
+    <h2>Indices App</h2>
+    <p ng-show="result.length > 0">
+        Integers: {{ indices }}<br>
+        Target: {{ target }}<br>
+        Indices: [{{ result[0] }}, {{ result[1] }}]
+    </p>
+    <p ng-show="result.length === 0">
+        Integers: {{ indices }}<br>
+        Target: {{ target }}<br>
+        No indices found.
+    </p>
+
+    <script>
+        angular.module('indicesApp', [])
+            .controller('IndicesController', function ($scope) {
+                $scope.findIndices = function (indices, target) {
+                    for (var i = 0; i < indices.length; i++) {
+                        for (var j = i + 1; j < indices.length; j++) {
+                            var value1 = indices[i];
+                            var value2 = indices[j];
+                            var sum = value1 + value2;
+
+                            if (sum === target) {
+                                $scope.result = [value1, value2];
+                                $scope.indices = indices;
+                                $scope.target = target;
+                                console.log("Indices that add up to the target " + target + ":");
+                                console.log("Original Array: " + JSON.stringify(indices));
+                                console.log("Target: " + target);
+                                console.log("Index 1: " + value1);
+                                console.log("Index 2: " + value2 + "\n");
+                                return;
+                            }
+                        }
+                    }
+                    $scope.result = [];
+                    $scope.indices = indices;
+                    $scope.target = target;
+                    console.log("No indices found that add up to the target " + target + ".\n");
+                };
+
+                // Example usage
+                var indices = [2, 7, 11, 15];
+                var target = 9;
+
+                // Call the findIndices function explicitly
+                $scope.findIndices(indices, target);
+            });
+    </script>
+</div>
+
+</body>
+</html>
